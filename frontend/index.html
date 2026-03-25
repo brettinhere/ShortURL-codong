@@ -3,263 +3,501 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>URL Shortener — Built with Codong</title>
+<title>URL Shortener — Built with Codong Programming Language</title>
+
+<!-- ═══ Primary SEO ═══ -->
+<meta name="description" content="A free URL shortener built in 42 lines of Codong — a new programming language that replaces Python, Go, and JavaScript with dramatically less code. Open source, MIT license.">
+<meta name="keywords" content="URL shortener, Codong, programming language, shorten URL, link shortener, open source, codong.org, 短链接, 网址缩短">
+<meta name="author" content="Codong">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+<link rel="canonical" href="https://codong.org/short-url/">
+
+<!-- ═══ Open Graph (social + AI crawlers) ═══ -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://codong.org/short-url/">
+<meta property="og:title" content="URL Shortener — Built with Codong">
+<meta property="og:description" content="A complete URL shortener service written in just 42 lines of Codong. Compare with Python (~90 lines), Go (~110 lines), and JavaScript (~95 lines). No frameworks. No boilerplate.">
+<meta property="og:image" content="https://codong.org/short-url/og-image.png">
+<meta property="og:site_name" content="Codong">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="zh_CN">
+
+<!-- ═══ Twitter Card ═══ -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@codong_lang">
+<meta name="twitter:title" content="URL Shortener in 42 lines — Codong">
+<meta name="twitter:description" content="Same service. Python needs 90 lines. Go needs 110. Codong needs 42. No frameworks. Built-in db + http.">
+<meta name="twitter:image" content="https://codong.org/short-url/og-image.png">
+
+<!-- ═══ Structured Data — WebApplication ═══ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Codong URL Shortener",
+  "url": "https://codong.org/short-url/",
+  "description": "A free URL shortener service built with the Codong programming language. Shorten any URL instantly. Open source under MIT license.",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "Codong",
+    "url": "https://codong.org"
+  },
+  "codeRepository": "https://github.com/brettinhere/ShortURL-codong",
+  "license": "https://opensource.org/licenses/MIT",
+  "keywords": ["url shortener", "link shortener", "codong", "programming language", "open source"]
+}
+</script>
+
+<!-- ═══ Structured Data — SoftwareSourceCode ═══ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareSourceCode",
+  "name": "ShortURL-codong",
+  "description": "A complete URL shortener written in 42 lines of Codong — a new programming language. 2.5x fewer lines than Python or Go.",
+  "codeRepository": "https://github.com/brettinhere/ShortURL-codong",
+  "programmingLanguage": {
+    "@type": "ComputerLanguage",
+    "name": "Codong",
+    "url": "https://codong.org"
+  },
+  "runtimePlatform": "Codong Runtime",
+  "license": "https://opensource.org/licenses/MIT",
+  "author": {
+    "@type": "Organization",
+    "name": "Codong",
+    "url": "https://codong.org"
+  }
+}
+</script>
+
+<!-- ═══ Structured Data — FAQPage (AI搜索答案框) ═══ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is Codong?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Codong is a new programming language designed for AI-native development. It has built-in modules for HTTP servers, databases, LLM calls, and more — eliminating the need for third-party frameworks. A full URL shortener service takes just 42 lines in Codong, versus 90+ lines in Python or JavaScript."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does this URL shortener work?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Paste any long URL into the input field and click Shorten. The service generates a unique 6-character code and returns a short link at codong.org/s/{code}. Clicking the short link redirects to the original URL with a 301 redirect. Built on SQLite, no external dependencies."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is the source code available?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. The full source is open source on GitHub at github.com/brettinhere/ShortURL-codong under the MIT license. The core service is written in Codong (42 lines) with a Go runtime implementation."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why is Codong better than Python or Go for this?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Codong has built-in db and web modules, so there is no need to import Flask, SQLAlchemy, Express, or any ORM. The same URL shortener requires ~90 lines in Python with Flask+SQLAlchemy, ~110 lines in Go, and ~95 lines in JavaScript with Express. Codong needs 42 lines with zero dependencies."
+      }
+    }
+  ]
+}
+</script>
 <style>
   :root {
-    --bg: #0d1117;
-    --surface: #161b22;
-    --border: #30363d;
-    --accent: #58a6ff;
-    --accent2: #3fb950;
-    --text: #e6edf3;
-    --muted: #8b949e;
-    --code-bg: #0d1117;
-    --radius: 8px;
-    --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+    --bg: #ffffff;
+    --surface: #f8f9fa;
+    --surface2: #f1f3f5;
+    --border: #dee2e6;
+    --border-light: #e9ecef;
+    --accent: #2563eb;
+    --accent-dark: #1d4ed8;
+    --accent-light: #eff6ff;
+    --accent2: #16a34a;
+    --text: #111827;
+    --text-secondary: #374151;
+    --muted: #6b7280;
+    --muted-light: #9ca3af;
+    --code-bg: #f8f9fa;
+    --code-border: #e5e7eb;
+    --radius: 6px;
+    --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Courier New', monospace;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+    --shadow: 0 4px 12px rgba(0,0,0,.08);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     background: var(--bg);
     color: var(--text);
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family: 'Georgia', 'Times New Roman', serif;
     font-size: 15px;
-    line-height: 1.6;
+    line-height: 1.7;
     min-height: 100vh;
   }
 
   /* NAV */
   nav {
     border-bottom: 1px solid var(--border);
-    padding: 0 24px;
+    padding: 0 32px;
     display: flex;
     align-items: center;
-    gap: 24px;
-    height: 56px;
+    gap: 28px;
+    height: 54px;
+    background: var(--bg);
   }
   .nav-logo {
     font-family: var(--font-mono);
-    font-size: 17px;
+    font-size: 15px;
     font-weight: 700;
     color: var(--text);
     text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    letter-spacing: -.02em;
   }
   .nav-logo span { color: var(--accent); }
-  .nav-link {
+  .nav-divider { width: 1px; height: 18px; background: var(--border); }
+  .nav-title {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: .01em;
+  }
+  .nav-spacer { flex: 1; }
+  .lang-switch {
+    display: flex;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .lang-btn {
+    padding: 4px 12px;
+    font-size: 12px;
+    font-family: var(--font-mono);
+    font-weight: 600;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all .15s;
+    letter-spacing: .04em;
+  }
+  .lang-btn.active {
+    background: var(--accent);
+    color: #fff;
+  }
+  .lang-btn:not(.active):hover { background: var(--surface); color: var(--text); }
+  .nav-gh {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
     color: var(--muted);
     text-decoration: none;
-    font-size: 13px;
-    transition: color .15s;
-  }
-  .nav-link:hover { color: var(--text); }
-  .nav-spacer { flex: 1; }
-  .nav-badge {
-    font-size: 12px;
-    padding: 3px 10px;
+    font-family: -apple-system, sans-serif;
+    padding: 4px 10px;
     border: 1px solid var(--border);
-    border-radius: 20px;
-    color: var(--muted);
+    border-radius: var(--radius);
+    transition: all .15s;
   }
+  .nav-gh:hover { border-color: var(--accent); color: var(--accent); }
 
   /* HERO */
   .hero {
-    text-align: center;
-    padding: 72px 24px 48px;
     max-width: 680px;
     margin: 0 auto;
+    padding: 60px 24px 40px;
+    text-align: center;
   }
-  .hero-tag {
-    display: inline-block;
-    font-size: 12px;
-    letter-spacing: .08em;
+  .hero-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: .12em;
     text-transform: uppercase;
     color: var(--accent);
-    border: 1px solid rgba(88,166,255,.3);
-    border-radius: 20px;
-    padding: 4px 12px;
     margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .hero-eyebrow::before,
+  .hero-eyebrow::after {
+    content: '';
+    display: block;
+    width: 28px;
+    height: 1px;
+    background: var(--accent);
+    opacity: .4;
   }
   h1 {
-    font-size: clamp(28px, 5vw, 42px);
+    font-family: 'Georgia', serif;
+    font-size: clamp(26px, 4vw, 36px);
     font-weight: 700;
-    line-height: 1.2;
-    margin-bottom: 16px;
     letter-spacing: -.02em;
+    color: var(--text);
+    margin-bottom: 12px;
+    line-height: 1.25;
   }
-  h1 em { color: var(--accent); font-style: normal; }
-  .hero p {
+  .hero-sub {
+    font-size: 15px;
     color: var(--muted);
-    font-size: 16px;
-    max-width: 480px;
+    max-width: 420px;
     margin: 0 auto 36px;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    line-height: 1.6;
   }
 
-  /* SHORTEN BOX */
+  /* SHORTEN CARD */
   .shorten-card {
-    background: var(--surface);
+    background: var(--bg);
     border: 1px solid var(--border);
     border-radius: var(--radius);
     padding: 24px;
+    box-shadow: var(--shadow);
     max-width: 560px;
     margin: 0 auto;
   }
-  .input-row {
-    display: flex;
-    gap: 8px;
+  .field-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
   }
+  .input-row { display: flex; gap: 8px; }
   .url-input {
     flex: 1;
-    background: var(--bg);
+    background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 10px 14px;
-    color: var(--text);
-    font-size: 14px;
-    outline: none;
-    transition: border-color .15s;
-  }
-  .url-input:focus { border-color: var(--accent); }
-  .url-input::placeholder { color: var(--muted); }
-  .btn {
-    padding: 10px 20px;
-    border-radius: 6px;
-    border: none;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: opacity .15s;
-    white-space: nowrap;
-  }
-  .btn:hover { opacity: .85; }
-  .btn-primary { background: var(--accent); color: #0d1117; }
-  .btn-copy {
-    background: var(--border);
+    border-radius: var(--radius);
+    padding: 9px 13px;
     color: var(--text);
     font-size: 13px;
-    padding: 8px 14px;
+    font-family: var(--font-mono);
+    outline: none;
+    transition: border-color .15s, box-shadow .15s;
   }
-  .result {
-    margin-top: 16px;
-    display: none;
+  .url-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(37,99,235,.08);
     background: var(--bg);
+  }
+  .url-input::placeholder { color: var(--muted-light); }
+  .btn {
+    padding: 9px 18px;
+    border-radius: var(--radius);
+    border: none;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: -apple-system, sans-serif;
+    cursor: pointer;
+    transition: all .15s;
+    white-space: nowrap;
+    letter-spacing: .01em;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+  }
+  .btn-primary:hover { background: var(--accent-dark); }
+  .btn-primary:disabled { opacity: .6; cursor: not-allowed; }
+  .btn-copy {
+    background: var(--surface2);
+    color: var(--text-secondary);
     border: 1px solid var(--border);
-    border-radius: 6px;
+    font-size: 12px;
+    padding: 7px 13px;
+  }
+  .btn-copy:hover { background: var(--surface); }
+  .result {
+    margin-top: 14px;
+    display: none;
+    background: var(--accent-light);
+    border: 1px solid rgba(37,99,235,.2);
+    border-radius: var(--radius);
     padding: 12px 14px;
   }
   .result.show { display: block; }
-  .result-label { font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+  .result-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
   .result-row { display: flex; align-items: center; gap: 8px; }
   .short-link {
     flex: 1;
     color: var(--accent);
     font-family: var(--font-mono);
-    font-size: 14px;
+    font-size: 13px;
+    font-weight: 600;
     text-decoration: none;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
   .short-link:hover { text-decoration: underline; }
-  .copied-msg { font-size: 12px; color: var(--accent2); display: none; }
+  .copied-msg { font-size: 11px; color: var(--accent2); display: none; font-weight: 600; }
+
+  /* DIVIDER */
+  .section-divider {
+    max-width: 900px;
+    margin: 56px auto 0;
+    padding: 0 24px;
+    border-top: 1px solid var(--border-light);
+  }
 
   /* SECTION */
   .section {
     max-width: 900px;
-    margin: 72px auto;
-    padding: 0 24px;
+    margin: 0 auto;
+    padding: 48px 24px;
+  }
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 6px;
+  }
+  .section-num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: .1em;
+    font-weight: 700;
   }
   .section-title {
-    font-size: 22px;
+    font-family: 'Georgia', serif;
+    font-size: 19px;
     font-weight: 700;
-    margin-bottom: 8px;
+    color: var(--text);
     letter-spacing: -.01em;
   }
   .section-sub {
     color: var(--muted);
-    font-size: 14px;
-    margin-bottom: 28px;
+    font-size: 13px;
+    margin-bottom: 24px;
+    font-family: -apple-system, sans-serif;
+    padding-left: 28px;
   }
 
   /* CODE COMPARE */
   .compare-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 16px;
+    gap: 14px;
   }
   @media (max-width: 700px) { .compare-grid { grid-template-columns: 1fr; } }
   .code-card {
-    background: var(--surface);
+    background: var(--bg);
     border: 1px solid var(--border);
     border-radius: var(--radius);
     overflow: hidden;
+    box-shadow: var(--shadow-sm);
+  }
+  .code-card.featured {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent), var(--shadow-sm);
   }
   .code-header {
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 10px 16px;
+    padding: 9px 14px;
     border-bottom: 1px solid var(--border);
-    font-size: 12px;
-    font-weight: 600;
+    font-size: 11px;
+    font-weight: 700;
     font-family: var(--font-mono);
-    letter-spacing: .02em;
+    letter-spacing: .05em;
+    background: var(--surface);
+    color: var(--text-secondary);
+  }
+  .code-card.featured .code-header {
+    background: var(--accent-light);
+    border-color: rgba(37,99,235,.2);
+    color: var(--accent-dark);
   }
   .lang-dot {
-    width: 10px;
-    height: 10px;
+    width: 8px; height: 8px;
     border-radius: 50%;
     flex-shrink: 0;
   }
   .dot-cod { background: var(--accent); }
-  .dot-py { background: #3572A5; }
-  .dot-go { background: #00ADD8; }
-  .dot-js { background: #f1e05a; }
-  .line-count {
-    margin-left: auto;
-    color: var(--muted);
-    font-weight: 400;
-  }
+  .dot-py  { background: #3572A5; }
+  .dot-go  { background: #00ADD8; }
+  .dot-js  { background: #e8b400; }
+  .line-count { margin-left: auto; font-weight: 400; color: var(--muted); font-size: 10px; letter-spacing: .04em; }
+  .line-count.highlight { color: var(--accent); font-weight: 700; }
   .code-card pre {
-    padding: 16px;
+    padding: 14px 16px;
     overflow-x: auto;
     font-family: var(--font-mono);
-    font-size: 12.5px;
-    line-height: 1.7;
-    color: #cdd9e5;
+    font-size: 11.5px;
+    line-height: 1.75;
+    color: var(--text-secondary);
     background: var(--code-bg);
   }
-  /* syntax highlight tokens */
-  .kw { color: #ff7b72; }
-  .fn-name { color: #d2a8ff; }
-  .str { color: #a5d6ff; }
-  .cmt { color: #8b949e; font-style: italic; }
-  .num { color: #79c0ff; }
-  .builtin { color: #ffa657; }
+  .kw      { color: #7c3aed; }
+  .fn-name { color: #0369a1; }
+  .str     { color: #16a34a; }
+  .cmt     { color: var(--muted-light); font-style: italic; }
+  .num     { color: #0891b2; }
+  .builtin { color: #c2410c; }
 
-  /* STATS BAR */
-  .stats-bar {
-    display: flex;
-    gap: 32px;
-    flex-wrap: wrap;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 20px 28px;
-    margin-top: 28px;
+  /* STATS TABLE */
+  .stats-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 24px;
+    font-family: -apple-system, sans-serif;
+    font-size: 13px;
   }
-  .stat { text-align: center; }
-  .stat-num { font-size: 28px; font-weight: 700; font-family: var(--font-mono); }
-  .stat-num.green { color: var(--accent2); }
-  .stat-num.blue { color: var(--accent); }
-  .stat-label { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .stats-table th {
+    text-align: left;
+    padding: 8px 16px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 2px solid var(--border);
+    background: var(--surface);
+  }
+  .stats-table td {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border-light);
+    color: var(--text-secondary);
+  }
+  .stats-table tr:last-child td { border-bottom: none; }
+  .stats-table tr.featured-row td { background: var(--accent-light); font-weight: 600; color: var(--accent-dark); }
+  .bar-wrap { display: flex; align-items: center; gap: 10px; }
+  .bar { height: 6px; border-radius: 3px; background: var(--border); min-width: 4px; transition: width .3s; }
+  .bar.accent { background: var(--accent); }
+  .bar-label { font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
 
-  /* OPEN SOURCE BANNER */
-  .oss-banner {
+  /* OSS */
+  .oss-section {
     max-width: 900px;
-    margin: 0 auto 72px;
-    padding: 0 24px;
+    margin: 0 auto;
+    padding: 0 24px 64px;
   }
   .oss-card {
     display: flex;
@@ -268,22 +506,27 @@
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    padding: 24px 28px;
+    padding: 22px 26px;
   }
-  .oss-icon { font-size: 32px; }
-  .oss-text h3 { font-size: 16px; margin-bottom: 4px; }
-  .oss-text p { font-size: 13px; color: var(--muted); }
+  .oss-icon { font-size: 24px; }
+  .oss-text h3 {
+    font-family: 'Georgia', serif;
+    font-size: 15px;
+    margin-bottom: 3px;
+  }
+  .oss-text p { font-size: 13px; color: var(--muted); font-family: -apple-system, sans-serif; }
   .oss-link {
     margin-left: auto;
     flex-shrink: 0;
-    padding: 8px 18px;
+    padding: 7px 16px;
     border: 1px solid var(--border);
-    border-radius: 6px;
-    color: var(--text);
+    border-radius: var(--radius);
+    color: var(--text-secondary);
     text-decoration: none;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
-    transition: border-color .15s;
+    font-family: -apple-system, sans-serif;
+    transition: all .15s;
   }
   .oss-link:hover { border-color: var(--accent); color: var(--accent); }
 
@@ -291,61 +534,76 @@
   footer {
     border-top: 1px solid var(--border);
     text-align: center;
-    padding: 24px;
-    color: var(--muted);
-    font-size: 13px;
+    padding: 20px 24px;
+    color: var(--muted-light);
+    font-size: 12px;
+    font-family: var(--font-mono);
+    letter-spacing: .03em;
   }
   footer a { color: var(--muted); text-decoration: none; }
-  footer a:hover { color: var(--text); }
+  footer a:hover { color: var(--accent); }
 </style>
 </head>
 <body>
 
 <nav>
-  <a class="nav-logo" href="https://codong.org">cod<span>.</span>ong</a>
-  <a class="nav-link" href="https://github.com/brettinhere/Codong">Docs</a>
-  <a class="nav-link" href="https://github.com/brettinhere/Codong">GitHub</a>
+  <a class="nav-logo" href="https://codong.org">codong<span>.org</span></a>
+  <div class="nav-divider"></div>
+  <span class="nav-title" data-i18n="nav_title">URL Shortener</span>
   <div class="nav-spacer"></div>
-  <span class="nav-badge">v0.1 alpha</span>
+  <div class="lang-switch">
+    <button class="lang-btn active" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" onclick="setLang('zh')">中文</button>
+  </div>
+  <a class="nav-gh" href="https://github.com/brettinhere/Codong" target="_blank">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+    GitHub
+  </a>
 </nav>
 
+<!-- HERO -->
 <div class="hero">
-  <div class="hero-tag">Built with Codong</div>
-  <h1>Shorten URLs.<br><em>Ship less code.</em></h1>
-  <p>A full URL shortener service written in 42 lines of Codong — no frameworks, no boilerplate.</p>
+  <div class="hero-eyebrow" data-i18n="eyebrow">URL Shortener</div>
+  <h1 data-i18n="hero_title">短链接生成</h1>
+  <p class="hero-sub" data-i18n="hero_sub">Powered by Codong · Open Source · MIT License</p>
 
   <div class="shorten-card">
+    <div class="field-label" data-i18n="input_label">Long URL</div>
     <div class="input-row">
-      <input class="url-input" id="urlInput" type="url" placeholder="https://your-long-url.com/goes/here">
-      <button class="btn btn-primary" onclick="shorten()">Shorten</button>
+      <input class="url-input" id="urlInput" type="url" data-i18n-placeholder="input_placeholder">
+      <button class="btn btn-primary" id="shortenBtn" onclick="shorten()" data-i18n="btn_shorten">Shorten</button>
     </div>
     <div class="result" id="result">
-      <div class="result-label">Your short link</div>
+      <div class="result-label" data-i18n="result_label">Short Link</div>
       <div class="result-row">
         <a class="short-link" id="shortLink" href="#" target="_blank"></a>
-        <button class="btn btn-copy" onclick="copy()">Copy</button>
-        <span class="copied-msg" id="copiedMsg">Copied!</span>
+        <button class="btn btn-copy" onclick="copy()" data-i18n="btn_copy">Copy</button>
+        <span class="copied-msg" id="copiedMsg" data-i18n="copied">Copied!</span>
       </div>
     </div>
   </div>
 </div>
 
+<div class="section-divider"></div>
+
 <!-- CODE COMPARISON -->
 <div class="section">
-  <div class="section-title">The whole service. 42 lines.</div>
-  <div class="section-sub">Compare the same URL shortener across languages. Same logic, different noise.</div>
+  <div class="section-header">
+    <span class="section-num">§ 01</span>
+    <span class="section-title" data-i18n="code_title">Source Code</span>
+  </div>
+  <p class="section-sub" data-i18n="code_sub">The complete service — compare across languages</p>
 
   <div class="compare-grid">
 
     <!-- CODONG -->
-    <div class="code-card" style="border-color: rgba(88,166,255,.4);">
+    <div class="code-card featured">
       <div class="code-header">
         <div class="lang-dot dot-cod"></div>
         main.cod
-        <span class="line-count">42 lines ✦</span>
+        <span class="line-count highlight">42 lines ✦</span>
       </div>
-      <pre><span class="cmt">// Codong URL Shortener</span>
-<span class="cmt">// 42 lines. No frameworks.</span>
+      <pre><span class="cmt">// Codong URL Shortener — 42 lines</span>
 
 <span class="kw">import</span> { generate_id, is_valid_url }
   <span class="kw">from</span> <span class="str">"./lib/url_utils.cod"</span>
@@ -353,9 +611,9 @@
 <span class="builtin">db</span>.connect(<span class="str">"sqlite://shorturl.db"</span>)
 <span class="builtin">db</span>.exec(<span class="str">"""
   CREATE TABLE IF NOT EXISTS urls (
-    code TEXT PRIMARY KEY,
-    long_url TEXT NOT NULL,
-    hits INTEGER DEFAULT 0,
+    code       TEXT PRIMARY KEY,
+    long_url   TEXT NOT NULL,
+    hits       INTEGER DEFAULT 0,
     created_at TEXT DEFAULT (datetime('now'))
   )
 """</span>)
@@ -369,26 +627,32 @@ server.post(<span class="str">"/api/shorten"</span>, <span class="kw">fn</span>(
     <span class="kw">return</span> {status: <span class="num">400</span>, body: {error: <span class="str">"invalid url"</span>}}
   }
   code = generate_id(<span class="num">6</span>)
-  <span class="builtin">db</span>.exec(<span class="str">"INSERT INTO urls (code, long_url) VALUES (?, ?)"</span>, code, body.url)
+  <span class="builtin">db</span>.exec(<span class="str">"INSERT INTO urls (code, long_url) VALUES (?, ?)"</span>,
+    code, body.url)
   <span class="kw">return</span> {status: <span class="num">200</span>, body: {
     code: code,
     short_url: <span class="str">"https://codong.org/s/{code}"</span>,
   }}
 })
 
-<span class="cmt">// GET /s/:code  →  301 redirect</span>
+<span class="cmt">// GET /s/:code → 301 redirect</span>
 server.get(<span class="str">"/s/:code"</span>, <span class="kw">fn</span>(req) {
-  row = <span class="builtin">db</span>.find_one(<span class="str">"SELECT long_url FROM urls WHERE code = ?"</span>, req.params.code)
+  row = <span class="builtin">db</span>.find_one(
+    <span class="str">"SELECT long_url FROM urls WHERE code = ?"</span>,
+    req.params.code)
   <span class="kw">if</span> row == <span class="kw">null</span> {
     <span class="kw">return</span> {status: <span class="num">404</span>, body: {error: <span class="str">"not found"</span>}}
   }
-  <span class="builtin">db</span>.exec(<span class="str">"UPDATE urls SET hits = hits + 1 WHERE code = ?"</span>, req.params.code)
+  <span class="builtin">db</span>.exec(<span class="str">"UPDATE urls SET hits = hits + 1 WHERE code = ?"</span>,
+    req.params.code)
   <span class="kw">return</span> {status: <span class="num">301</span>, headers: {<span class="str">"Location"</span>: row.long_url}}
 })
 
 <span class="cmt">// GET /api/stats/:code</span>
 server.get(<span class="str">"/api/stats/:code"</span>, <span class="kw">fn</span>(req) {
-  row = <span class="builtin">db</span>.find_one(<span class="str">"SELECT * FROM urls WHERE code = ?"</span>, req.params.code)
+  row = <span class="builtin">db</span>.find_one(
+    <span class="str">"SELECT * FROM urls WHERE code = ?"</span>,
+    req.params.code)
   <span class="kw">if</span> row == <span class="kw">null</span> {
     <span class="kw">return</span> {status: <span class="num">404</span>, body: {error: <span class="str">"not found"</span>}}
   }
@@ -402,7 +666,7 @@ server.listen()</pre>
     <div class="code-card">
       <div class="code-header">
         <div class="lang-dot dot-py"></div>
-        main.py
+        main.py  <span style="color:var(--muted-light);font-weight:400;font-size:10px;margin-left:4px;">Flask + SQLAlchemy</span>
         <span class="line-count">~90 lines</span>
       </div>
       <pre><span class="kw">from</span> flask <span class="kw">import</span> Flask, request, redirect, jsonify
@@ -418,7 +682,8 @@ db = SQLAlchemy(app)
     code       = db.Column(db.String(<span class="num">10</span>), primary_key=<span class="kw">True</span>)
     long_url   = db.Column(db.String(<span class="num">2048</span>), nullable=<span class="kw">False</span>)
     hits       = db.Column(db.Integer, default=<span class="num">0</span>)
-    created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    created_at = db.Column(db.DateTime,
+                   default=datetime.datetime.utcnow)
 
 <span class="kw">with</span> app.app_context():
     db.create_all()
@@ -428,7 +693,8 @@ db = SQLAlchemy(app)
     <span class="kw">return</span> <span class="str">''</span>.join(random.choice(chars) <span class="kw">for</span> _ <span class="kw">in</span> range(n))
 
 <span class="kw">def</span> <span class="fn-name">is_valid_url</span>(s):
-    <span class="kw">return</span> s <span class="kw">and</span> (s.startswith(<span class="str">'http://'</span>) <span class="kw">or</span> s.startswith(<span class="str">'https://'</span>))
+    <span class="kw">return</span> s <span class="kw">and</span> (s.startswith(<span class="str">'http://'</span>) <span class="kw">or</span>
+                   s.startswith(<span class="str">'https://'</span>))
 
 @app.route(<span class="str">'/api/shorten'</span>, methods=[<span class="str">'POST'</span>])
 <span class="kw">def</span> <span class="fn-name">shorten</span>():
@@ -473,7 +739,7 @@ db = SQLAlchemy(app)
     <div class="code-card">
       <div class="code-header">
         <div class="lang-dot dot-go"></div>
-        main.go
+        main.go  <span style="color:var(--muted-light);font-weight:400;font-size:10px;margin-left:4px;">stdlib only</span>
         <span class="line-count">~110 lines</span>
       </div>
       <pre><span class="kw">package</span> main
@@ -481,18 +747,17 @@ db = SQLAlchemy(app)
 <span class="kw">import</span> (
   <span class="str">"database/sql"</span>
   <span class="str">"encoding/json"</span>
-  <span class="str">"log"</span>
-  <span class="str">"math/rand"</span>
-  <span class="str">"net/http"</span>
-  <span class="str">"strings"</span>
+  <span class="str">"log"</span>; <span class="str">"math/rand"</span>
+  <span class="str">"net/http"</span>; <span class="str">"strings"</span>
   _ <span class="str">"modernc.org/sqlite"</span>
 )
 
 <span class="kw">const</span> chars = <span class="str">"abcdefghijklmnopqrstuvwxyz0123456789"</span>
-
 <span class="kw">var</span> db *sql.DB
 
-<span class="kw">type</span> <span class="fn-name">ShortenReq</span> <span class="kw">struct</span> { URL <span class="kw">string</span> <span class="str">`json:"url"`</span> }
+<span class="kw">type</span> <span class="fn-name">ShortenReq</span> <span class="kw">struct</span> {
+  URL <span class="kw">string</span> <span class="str">`json:"url"`</span>
+}
 <span class="kw">type</span> <span class="fn-name">URLRow</span> <span class="kw">struct</span> {
   Code      <span class="kw">string</span> <span class="str">`json:"code"`</span>
   LongURL   <span class="kw">string</span> <span class="str">`json:"long_url"`</span>
@@ -502,51 +767,63 @@ db = SQLAlchemy(app)
 
 <span class="kw">func</span> <span class="fn-name">generateID</span>(n <span class="kw">int</span>) <span class="kw">string</span> {
   b := make([]<span class="kw">byte</span>, n)
-  <span class="kw">for</span> i := <span class="kw">range</span> b { b[i] = chars[rand.Intn(<span class="builtin">len</span>(chars))] }
+  <span class="kw">for</span> i := <span class="kw">range</span> b {
+    b[i] = chars[rand.Intn(<span class="builtin">len</span>(chars))]
+  }
   <span class="kw">return</span> <span class="kw">string</span>(b)
 }
 
 <span class="kw">func</span> <span class="fn-name">main</span>() {
   db, _ = sql.Open(<span class="str">"sqlite"</span>, <span class="str">"file:shorturl.db"</span>)
   db.Exec(<span class="str">`CREATE TABLE IF NOT EXISTS urls (
-    code TEXT PRIMARY KEY, long_url TEXT NOT NULL,
+    code TEXT PRIMARY KEY,
+    long_url TEXT NOT NULL,
     hits INTEGER DEFAULT 0,
     created_at TEXT DEFAULT (datetime('now')))`</span>)
 
   mux := http.NewServeMux()
 
-  mux.HandleFunc(<span class="str">"POST /api/shorten"</span>, <span class="kw">func</span>(w http.ResponseWriter, r *http.Request) {
-    <span class="kw">var</span> body ShortenReq
-    json.NewDecoder(r.Body).Decode(&body)
-    <span class="kw">if</span> !strings.HasPrefix(body.URL, <span class="str">"http"</span>) {
-      w.WriteHeader(<span class="num">400</span>)
-      json.NewEncoder(w).Encode(map[<span class="kw">string</span>]<span class="kw">string</span>{<span class="str">"error"</span>: <span class="str">"invalid url"</span>})
-      <span class="kw">return</span>
-    }
-    code := generateID(<span class="num">6</span>)
-    db.Exec(<span class="str">"INSERT INTO urls (code, long_url) VALUES (?, ?)"</span>, code, body.URL)
-    json.NewEncoder(w).Encode(map[<span class="kw">string</span>]<span class="kw">string</span>{
-      <span class="str">"code"</span>: code,
-      <span class="str">"short_url"</span>: <span class="str">"https://codong.org/s/"</span> + code,
+  mux.HandleFunc(<span class="str">"POST /api/shorten"</span>,
+    <span class="kw">func</span>(w http.ResponseWriter, r *http.Request) {
+      <span class="kw">var</span> body ShortenReq
+      json.NewDecoder(r.Body).Decode(&body)
+      <span class="kw">if</span> !strings.HasPrefix(body.URL, <span class="str">"http"</span>) {
+        w.WriteHeader(<span class="num">400</span>)
+        json.NewEncoder(w).Encode(
+          map[<span class="kw">string</span>]<span class="kw">string</span>{<span class="str">"error"</span>: <span class="str">"invalid url"</span>})
+        <span class="kw">return</span>
+      }
+      code := generateID(<span class="num">6</span>)
+      db.Exec(<span class="str">"INSERT INTO urls (code, long_url) VALUES (?, ?)"</span>,
+        code, body.URL)
+      json.NewEncoder(w).Encode(map[<span class="kw">string</span>]<span class="kw">string</span>{
+        <span class="str">"code"</span>: code,
+        <span class="str">"short_url"</span>: <span class="str">"https://codong.org/s/"</span> + code,
+      })
     })
-  })
 
-  mux.HandleFunc(<span class="str">"GET /s/{code}"</span>, <span class="kw">func</span>(w http.ResponseWriter, r *http.Request) {
-    code := r.PathValue(<span class="str">"code"</span>)
-    <span class="kw">var</span> longURL <span class="kw">string</span>
-    <span class="kw">if</span> err := db.QueryRow(<span class="str">"SELECT long_url FROM urls WHERE code = ?"</span>, code).Scan(&longURL); err != <span class="kw">nil</span> {
-      w.WriteHeader(<span class="num">404</span>); <span class="kw">return</span>
-    }
-    db.Exec(<span class="str">"UPDATE urls SET hits = hits + 1 WHERE code = ?"</span>, code)
-    http.Redirect(w, r, longURL, <span class="num">301</span>)
-  })
+  mux.HandleFunc(<span class="str">"GET /s/{code}"</span>,
+    <span class="kw">func</span>(w http.ResponseWriter, r *http.Request) {
+      code := r.PathValue(<span class="str">"code"</span>)
+      <span class="kw">var</span> longURL <span class="kw">string</span>
+      <span class="kw">if</span> err := db.QueryRow(
+        <span class="str">"SELECT long_url FROM urls WHERE code = ?"</span>, code,
+      ).Scan(&longURL); err != <span class="kw">nil</span> {
+        w.WriteHeader(<span class="num">404</span>); <span class="kw">return</span>
+      }
+      db.Exec(<span class="str">"UPDATE urls SET hits=hits+1 WHERE code=?"</span>, code)
+      http.Redirect(w, r, longURL, <span class="num">301</span>)
+    })
 
-  mux.HandleFunc(<span class="str">"GET /api/stats/{code}"</span>, <span class="kw">func</span>(w http.ResponseWriter, r *http.Request) {
-    <span class="kw">var</span> row URLRow
-    db.QueryRow(<span class="str">"SELECT code,long_url,hits,created_at FROM urls WHERE code=?"</span>,
-      r.PathValue(<span class="str">"code"</span>)).Scan(&row.Code, &row.LongURL, &row.Hits, &row.CreatedAt)
-    json.NewEncoder(w).Encode(row)
-  })
+  mux.HandleFunc(<span class="str">"GET /api/stats/{code}"</span>,
+    <span class="kw">func</span>(w http.ResponseWriter, r *http.Request) {
+      <span class="kw">var</span> row URLRow
+      db.QueryRow(
+        <span class="str">"SELECT code,long_url,hits,created_at FROM urls WHERE code=?"</span>,
+        r.PathValue(<span class="str">"code"</span>),
+      ).Scan(&row.Code, &row.LongURL, &row.Hits, &row.CreatedAt)
+      json.NewEncoder(w).Encode(row)
+    })
 
   log.Fatal(http.ListenAndServe(<span class="str">":8082"</span>, mux))
 }</pre>
@@ -556,12 +833,11 @@ db = SQLAlchemy(app)
     <div class="code-card">
       <div class="code-header">
         <div class="lang-dot dot-js"></div>
-        main.js (Node)
+        main.js  <span style="color:var(--muted-light);font-weight:400;font-size:10px;margin-left:4px;">Express + better-sqlite3</span>
         <span class="line-count">~95 lines</span>
       </div>
       <pre><span class="kw">const</span> express = require(<span class="str">'express'</span>)
 <span class="kw">const</span> Database = require(<span class="str">'better-sqlite3'</span>)
-<span class="kw">const</span> crypto = require(<span class="str">'crypto'</span>)
 
 <span class="kw">const</span> app = express()
 <span class="kw">const</span> db = <span class="kw">new</span> Database(<span class="str">'shorturl.db'</span>)
@@ -584,87 +860,194 @@ db.exec(<span class="str">`CREATE TABLE IF NOT EXISTS urls (
 <span class="kw">function</span> <span class="fn-name">isValidUrl</span>(s) {
   <span class="kw">try</span> {
     <span class="kw">const</span> u = <span class="kw">new</span> URL(s)
-    <span class="kw">return</span> u.protocol === <span class="str">'http:'</span> || u.protocol === <span class="str">'https:'</span>
+    <span class="kw">return</span> u.protocol === <span class="str">'http:'</span> ||
+           u.protocol === <span class="str">'https:'</span>
   } <span class="kw">catch</span> { <span class="kw">return false</span> }
 }
+
 app.post(<span class="str">'/api/shorten'</span>, (req, res) => {
   <span class="kw">const</span> { url } = req.body
   <span class="kw">if</span> (!isValidUrl(url))
     <span class="kw">return</span> res.status(<span class="num">400</span>).json({ error: <span class="str">'invalid url'</span> })
   <span class="kw">const</span> code = generateId()
-  db.prepare(<span class="str">'INSERT INTO urls (code, long_url) VALUES (?, ?)'</span>).run(code, url)
-  res.json({ code, short_url: <span class="str">`https://codong.org/s/${code}`</span> })
+  db.prepare(
+    <span class="str">'INSERT INTO urls (code, long_url) VALUES (?, ?)'</span>
+  ).run(code, url)
+  res.json({
+    code,
+    short_url: <span class="str">`https://codong.org/s/${code}`</span>
+  })
 })
 
 app.get(<span class="str">'/s/:code'</span>, (req, res) => {
-  <span class="kw">const</span> row = db.prepare(<span class="str">'SELECT long_url FROM urls WHERE code = ?'</span>)
-    .get(req.params.code)
-  <span class="kw">if</span> (!row) <span class="kw">return</span> res.status(<span class="num">404</span>).json({ error: <span class="str">'not found'</span> })
-  db.prepare(<span class="str">'UPDATE urls SET hits = hits + 1 WHERE code = ?'</span>).run(req.params.code)
+  <span class="kw">const</span> row = db.prepare(
+    <span class="str">'SELECT long_url FROM urls WHERE code = ?'</span>
+  ).get(req.params.code)
+  <span class="kw">if</span> (!row)
+    <span class="kw">return</span> res.status(<span class="num">404</span>).json({ error: <span class="str">'not found'</span> })
+  db.prepare(
+    <span class="str">'UPDATE urls SET hits = hits + 1 WHERE code = ?'</span>
+  ).run(req.params.code)
   res.redirect(<span class="num">301</span>, row.long_url)
 })
 
 app.get(<span class="str">'/api/stats/:code'</span>, (req, res) => {
-  <span class="kw">const</span> row = db.prepare(<span class="str">'SELECT * FROM urls WHERE code = ?'</span>)
-    .get(req.params.code)
-  <span class="kw">if</span> (!row) <span class="kw">return</span> res.status(<span class="num">404</span>).json({ error: <span class="str">'not found'</span> })
+  <span class="kw">const</span> row = db.prepare(
+    <span class="str">'SELECT * FROM urls WHERE code = ?'</span>
+  ).get(req.params.code)
+  <span class="kw">if</span> (!row)
+    <span class="kw">return</span> res.status(<span class="num">404</span>).json({ error: <span class="str">'not found'</span> })
   res.json(row)
 })
 
-app.listen(<span class="num">8082</span>, () => console.log(<span class="str">'listening'</span>))</pre>
+app.listen(<span class="num">8082</span>,
+  () => console.log(<span class="str">'listening'</span>))</pre>
     </div>
 
   </div><!-- /compare-grid -->
 
-  <div class="stats-bar">
-    <div class="stat">
-      <div class="stat-num green">42</div>
-      <div class="stat-label">Codong lines</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num" style="color:var(--muted)">~95</div>
-      <div class="stat-label">Python lines</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num" style="color:var(--muted)">~110</div>
-      <div class="stat-label">Go lines</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num" style="color:var(--muted)">~95</div>
-      <div class="stat-label">JS lines</div>
-    </div>
-    <div class="stat" style="margin-left:auto">
-      <div class="stat-num blue">0</div>
-      <div class="stat-label">pip install / npm install needed</div>
-    </div>
-  </div>
+  <!-- STATS TABLE -->
+  <table class="stats-table">
+    <thead>
+      <tr>
+        <th data-i18n="tbl_lang">Language</th>
+        <th data-i18n="tbl_lines">Lines of Code</th>
+        <th data-i18n="tbl_deps">Dependencies</th>
+        <th data-i18n="tbl_db">DB Built-in</th>
+        <th data-i18n="tbl_http">HTTP Built-in</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="featured-row">
+        <td><strong>Codong</strong></td>
+        <td><div class="bar-wrap"><div class="bar accent" style="width:42px"></div><span class="bar-label">42</span></div></td>
+        <td>0</td>
+        <td>✓</td>
+        <td>✓</td>
+      </tr>
+      <tr>
+        <td>Python</td>
+        <td><div class="bar-wrap"><div class="bar" style="width:90px"></div><span class="bar-label">~90</span></div></td>
+        <td>Flask, SQLAlchemy</td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td>Go</td>
+        <td><div class="bar-wrap"><div class="bar" style="width:110px"></div><span class="bar-label">~110</span></div></td>
+        <td>modernc/sqlite</td>
+        <td>—</td>
+        <td>✓</td>
+      </tr>
+      <tr>
+        <td>JavaScript</td>
+        <td><div class="bar-wrap"><div class="bar" style="width:95px"></div><span class="bar-label">~95</span></div></td>
+        <td>Express, better-sqlite3</td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+    </tbody>
+  </table>
 </div>
 
-<!-- OSS BANNER -->
-<div class="oss-banner">
+<div class="section-divider"></div>
+
+<!-- OSS -->
+<div class="oss-section" style="padding-top:40px;">
   <div class="oss-card">
     <div class="oss-icon">⭐</div>
     <div class="oss-text">
-      <h3>Open Source</h3>
-      <p>The full source of this service is on GitHub. Use it, fork it, learn from it.</p>
+      <h3 data-i18n="oss_title">Open Source</h3>
+      <p data-i18n="oss_sub">Full source on GitHub. Use it, fork it, learn from it. MIT License.</p>
     </div>
-    <a class="oss-link" href="https://github.com/brettinhere/Codong" target="_blank">View on GitHub →</a>
+    <a class="oss-link" href="https://github.com/brettinhere/Codong" target="_blank" data-i18n="oss_btn">View on GitHub →</a>
   </div>
 </div>
 
 <footer>
-  Built with <a href="https://codong.org">Codong</a> · 
-  <a href="https://github.com/brettinhere/Codong" target="_blank">GitHub</a> · 
+  <a href="https://codong.org">codong.org</a> &nbsp;·&nbsp;
+  <a href="https://github.com/brettinhere/Codong" target="_blank">GitHub</a> &nbsp;·&nbsp;
   MIT License
 </footer>
 
 <script>
+const i18n = {
+  en: {
+    nav_title: 'URL Shortener',
+    eyebrow: 'URL Shortener',
+    hero_title: 'URL Shortener',
+    hero_sub: 'Powered by Codong · Open Source · MIT License',
+    input_label: 'Long URL',
+    input_placeholder: 'https://your-long-url.com/goes/here',
+    btn_shorten: 'Shorten',
+    result_label: 'Short Link',
+    btn_copy: 'Copy',
+    copied: 'Copied!',
+    code_title: 'Source Code',
+    code_sub: 'The complete service — compare across languages',
+    tbl_lang: 'Language',
+    tbl_lines: 'Lines of Code',
+    tbl_deps: 'Dependencies',
+    tbl_db: 'DB Built-in',
+    tbl_http: 'HTTP Built-in',
+    oss_title: 'Open Source',
+    oss_sub: 'Full source on GitHub. Use it, fork it, learn from it. MIT License.',
+    oss_btn: 'View on GitHub →',
+  },
+  zh: {
+    nav_title: '短链接生成',
+    eyebrow: '短链接生成',
+    hero_title: '短链接生成',
+    hero_sub: '由 Codong 驱动 · 开源 · MIT 许可证',
+    input_label: '原始链接',
+    input_placeholder: '请输入需要缩短的网址',
+    btn_shorten: '生成',
+    result_label: '短链接',
+    btn_copy: '复制',
+    copied: '已复制！',
+    code_title: '源代码',
+    code_sub: '完整服务代码 — 与其他语言横向对比',
+    tbl_lang: '语言',
+    tbl_lines: '代码行数',
+    tbl_deps: '依赖项',
+    tbl_db: '内置数据库',
+    tbl_http: '内置 HTTP',
+    oss_title: '开源',
+    oss_sub: '完整源码已发布在 GitHub，可自由使用、Fork 和学习。MIT 许可证。',
+    oss_btn: '在 GitHub 上查看 →',
+  }
+}
+
+let currentLang = 'en'
+
+function setLang(lang) {
+  currentLang = lang
+  const t = i18n[lang]
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n')
+    if (t[key]) el.textContent = t[key]
+  })
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const key = el.getAttribute('data-i18n-placeholder')
+    if (t[key]) el.placeholder = t[key]
+  })
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.trim().toLowerCase() === lang ||
+      (lang === 'zh' && btn.textContent.trim() === '中文'))
+  })
+  document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en'
+}
+
+// init
+setLang('en')
+
 async function shorten() {
   const input = document.getElementById('urlInput')
   const url = input.value.trim()
   if (!url) return
 
-  const btn = document.querySelector('.btn-primary')
+  const btn = document.getElementById('shortenBtn')
+  const t = i18n[currentLang]
   btn.textContent = '...'
   btn.disabled = true
 
@@ -685,7 +1068,7 @@ async function shorten() {
   } catch(e) {
     alert('Something went wrong')
   } finally {
-    btn.textContent = 'Shorten'
+    btn.textContent = i18n[currentLang].btn_shorten
     btn.disabled = false
   }
 }
