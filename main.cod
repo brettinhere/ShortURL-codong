@@ -1,0 +1,53 @@
+// Codong URL Shortener
+// 42 lines. No frameworks. No boilerplate.
+
+import { generate_id, is_valid_url } from "./lib/url_utils.cod"
+
+db.connect("sqlite://shorturl.db")
+db.exec("""
+    CREATE TABLE IF NOT EXISTS urls (
+        code TEXT PRIMARY KEY,
+        long_url TEXT NOT NULL,
+        hits INTEGER DEFAULT 0,
+        created_at TEXT DEFAULT (datetime('now'))
+    )
+""")
+
+server = web.serve(port: 8082)
+
+// POST /api/shorten  →  { code, short_url }
+server.post("/api/shorten", fn(req) {
+    body = req.json()
+    if !is_valid_url(body.url) {
+        return {status: 400, body: {error: "invalid url"}}
+    }
+
+    code = generate_id(6)
+    db.exec("INSERT INTO urls (code, long_url) VALUES (?, ?)", code, body.url)
+
+    return {status: 200, body: {
+        code: code,
+        short_url: "https://codong.org/s/{code}",
+    }}
+})
+
+// GET /s/:code  →  301 redirect
+server.get("/s/:code", fn(req) {
+    row = db.find_one("SELECT long_url, hits FROM urls WHERE code = ?", req.params.code)
+    if row == null {
+        return {status: 404, body: {error: "not found"}}
+    }
+    db.exec("UPDATE urls SET hits = hits + 1 WHERE code = ?", req.params.code)
+    return {status: 301, headers: {"Location": row.long_url}}
+})
+
+// GET /api/stats/:code  →  { code, long_url, hits, created_at }
+server.get("/api/stats/:code", fn(req) {
+    row = db.find_one("SELECT * FROM urls WHERE code = ?", req.params.code)
+    if row == null {
+        return {status: 404, body: {error: "not found"}}
+    }
+    return {status: 200, body: row}
+})
+
+server.listen()

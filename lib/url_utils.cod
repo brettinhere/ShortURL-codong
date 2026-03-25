@@ -1,0 +1,18 @@
+// url_utils.cod — shared helpers
+
+const CHARS = "abcdefghijklmnopqrstuvwxyz0123456789"
+
+export fn generate_id(length) {
+    result = ""
+    for i in range(0, length) {
+        result += CHARS[math.random_int(0, CHARS.len())]
+    }
+    return result
+}
+
+export fn is_valid_url(s) {
+    if s == null {
+        return false
+    }
+    return s.starts_with("http://") || s.starts_with("https://")
+}
