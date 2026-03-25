@@ -20,50 +20,172 @@ Go to **[https://codong.org/short-url/](https://codong.org/short-url/)**, paste 
 
 ---
 
-## Self-host in 3 steps
+## Self-host
+
+### Requirements
+
+- Go 1.22+
+- A Linux server (or macOS for local dev)
+- nginx (optional, for reverse proxy + HTTPS)
+
+### 1. Clone & Build
 
 ```bash
 git clone https://github.com/brettinhere/ShortURL-codong
 cd ShortURL-codong/cmd
-go mod tidy && go build -o shorturl .
-./shorturl
+go mod tidy
+go build -o shorturl .
 ```
 
-That's it. Service starts on `:8082`. SQLite database is created automatically.
+### 2. Run
 
-### API
+```bash
+./shorturl
+# 2026/03/25 shorturl listening on :8082
+```
+
+The SQLite database (`shorturl.db`) is created automatically in the working directory. That's all — the service is running.
+
+### 3. Verify
 
 ```bash
 # Shorten a URL
 curl -X POST http://localhost:8082/api/shorten \
   -H "Content-Type: application/json" \
-  -d '{"url": "https://your-long-url.com/very/long/path"}'
-# → {"code":"abc123","short_url":"https://codong.org/s/abc123"}
+  -d '{"url": "https://example.com/very/long/path"}'
+# → {"code":"abc123","short_url":"https://yourdomain.com/s/abc123"}
 
 # Check stats
 curl http://localhost:8082/api/stats/abc123
-# → {"code":"abc123","long_url":"...","hits":42,"created_at":"2026-03-25 07:12:46"}
+# → {"code":"abc123","long_url":"...","hits":0,"created_at":"2026-03-25 07:12:46"}
+
+# Redirect works
+curl -I http://localhost:8082/s/abc123
+# → HTTP/1.1 301 Moved Permanently
+# → Location: https://example.com/very/long/path
+```
+
+### 4. Keep it running with systemd
+
+```bash
+sudo nano /etc/systemd/system/shorturl.service
+```
+
+```ini
+[Unit]
+Description=ShortURL Service
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/shorturl
+ExecStart=/opt/shorturl/shorturl
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
+```
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable --now shorturl
+sudo systemctl status shorturl
+```
+
+### 5. nginx Reverse Proxy (HTTPS)
+
+```nginx
+server {
+    server_name yourdomain.com;
+
+    # Frontend
+    location /short-url/ {
+        alias /path/to/ShortURL-codong/frontend/;
+        try_files $uri $uri/ /path/to/ShortURL-codong/frontend/index.html;
+    }
+
+    # API
+    location /short-url/api/ {
+        proxy_pass http://127.0.0.1:8082/api/;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+
+    # Short link redirect
+    location /s/ {
+        proxy_pass http://127.0.0.1:8082/s/;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+
+    # SEO files
+    location = /robots.txt  { alias /path/to/ShortURL-codong/frontend/robots.txt; }
+    location = /sitemap.xml { alias /path/to/ShortURL-codong/frontend/sitemap.xml; }
+
+    listen 443 ssl;
+    # ... your SSL cert config
+}
+```
+
+Then reload nginx:
+```bash
+sudo nginx -t && sudo nginx -s reload
+```
+
+---
+
+## API Reference
+
+| Method | Path | Description |
+|--------|------|-------------|
+| `POST` | `/api/shorten` | Create a short link |
+| `GET` | `/s/:code` | Redirect to original URL |
+| `GET` | `/api/stats/:code` | Get click stats |
+
+**POST `/api/shorten`**
+```json
+// Request
+{ "url": "https://your-long-url.com" }
+
+// Response 200
+{ "code": "abc123", "short_url": "https://yourdomain.com/s/abc123" }
+
+// Response 400
+{ "error": "invalid url" }
+```
+
+**GET `/api/stats/:code`**
+```json
+{
+  "code": "abc123",
+  "long_url": "https://your-long-url.com",
+  "hits": 42,
+  "created_at": "2026-03-25 07:12:46"
+}
 ```
 
 ---
 
 ## SEO built-in
 
-This project ships with a complete SEO setup out of the box — so if you self-host, your page is immediately search engine and AI crawler ready:
+This project ships with a complete SEO setup — if you self-host, your page is immediately search engine and AI crawler ready:
 
 | Feature | Included |
-|---|---|
+|---------|----------|
 | `<meta>` description, keywords, canonical | ✓ |
 | Open Graph tags (social share preview) | ✓ |
 | Twitter Card (large image) | ✓ |
 | Schema.org `WebApplication` structured data | ✓ |
 | Schema.org `SoftwareSourceCode` structured data | ✓ |
 | Schema.org `FAQPage` (AI answer boxes) | ✓ |
-| `robots.txt` with GPTBot, Claude, Perplexity allowed | ✓ |
-| `sitemap.xml` with hreflang EN/ZH | ✓ |
+| `robots.txt` — GPTBot, Claude, Perplexity explicitly allowed | ✓ |
+| `sitemap.xml` with hreflang EN / ZH | ✓ |
 | OG image (`og-image.svg`) | ✓ |
 
-The FAQPage schema means your site can appear directly in AI-powered search results (ChatGPT search, Perplexity, Google AI Overviews) as a structured answer — no extra work needed.
+The `FAQPage` schema means your site can appear directly in AI-powered search results (ChatGPT search, Perplexity, Google AI Overviews) as a structured answer — no extra work needed.
+
+Just update the domain references in `frontend/index.html` from `codong.org` to your own domain and you're done.
 
 ---
 
@@ -122,7 +244,7 @@ server.listen()
 Compare that to other languages:
 
 | Language | Lines | Dependencies |
-|---|---|---|
+|----------|-------|--------------|
 | **Codong** | **42** | **0** |
 | Python (Flask + SQLAlchemy) | ~90 | 2 |
 | Go (stdlib) | ~110 | 1 |
@@ -130,7 +252,7 @@ Compare that to other languages:
 
 Codong has `db` and `web` built in. You write the logic. The language handles the rest.
 
-→ **Learn more about Codong: [codong.org](https://codong.org)**
+→ **Learn more: [codong.org](https://codong.org)**
 
 ---
 
