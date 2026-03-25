@@ -22,31 +22,40 @@ Go to **[https://codong.org/short-url/](https://codong.org/short-url/)**, paste 
 
 ## Self-host
 
-### Requirements
+### 1. Install Codong
 
-- Go 1.22+
-- A Linux server (or macOS for local dev)
-- nginx (optional, for reverse proxy + HTTPS)
+```bash
+curl -fsSL https://codong.org/install.sh | sh
+```
 
-### 1. Clone & Build
+Supports Linux (x86_64 / arm64) and macOS. That's the only dependency.
+
+Verify:
+```bash
+codong version
+# codong 0.1.0
+```
+
+### 2. Clone & Run
 
 ```bash
 git clone https://github.com/brettinhere/ShortURL-codong
-cd ShortURL-codong/cmd
-go mod tidy
-go build -o shorturl .
+cd ShortURL-codong
+
+codong run main.cod
+# shorturl listening on :8082
 ```
 
-### 2. Run
+The SQLite database (`shorturl.db`) is created automatically. Service is live.
+
+### 3. Or compile to a binary
 
 ```bash
+codong build main.cod -o shorturl
 ./shorturl
-# 2026/03/25 shorturl listening on :8082
 ```
 
-The SQLite database (`shorturl.db`) is created automatically in the working directory. That's all — the service is running.
-
-### 3. Verify
+### 4. Verify it works
 
 ```bash
 # Shorten a URL
@@ -59,13 +68,13 @@ curl -X POST http://localhost:8082/api/shorten \
 curl http://localhost:8082/api/stats/abc123
 # → {"code":"abc123","long_url":"...","hits":0,"created_at":"2026-03-25 07:12:46"}
 
-# Redirect works
+# Test redirect
 curl -I http://localhost:8082/s/abc123
 # → HTTP/1.1 301 Moved Permanently
 # → Location: https://example.com/very/long/path
 ```
 
-### 4. Keep it running with systemd
+### 5. Keep it running with systemd
 
 ```bash
 sudo nano /etc/systemd/system/shorturl.service
@@ -93,7 +102,7 @@ sudo systemctl enable --now shorturl
 sudo systemctl status shorturl
 ```
 
-### 5. nginx Reverse Proxy (HTTPS)
+### 6. nginx Reverse Proxy (HTTPS)
 
 ```nginx
 server {
@@ -128,7 +137,6 @@ server {
 }
 ```
 
-Then reload nginx:
 ```bash
 sudo nginx -t && sudo nginx -s reload
 ```
@@ -140,7 +148,7 @@ sudo nginx -t && sudo nginx -s reload
 | Method | Path | Description |
 |--------|------|-------------|
 | `POST` | `/api/shorten` | Create a short link |
-| `GET` | `/s/:code` | Redirect to original URL |
+| `GET` | `/s/:code` | Redirect to original URL (301) |
 | `GET` | `/api/stats/:code` | Get click stats |
 
 **POST `/api/shorten`**
